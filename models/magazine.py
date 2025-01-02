@@ -76,37 +76,29 @@ class Magazine:
         conn.commit()
 
     def article_titles(self):
-        # Fetch articles associated with the magazine
         articles = self.articles()
-        # If no articles found, return None
         if not articles:
             return None
-        # Extract titles from articles
         titles = [article.title for article in articles]
         return titles
 
     def contributing_authors(self):
         from models.author import Author
-        # Fetch articles associated with the magazine
         articles = self.articles()
-        # If no articles found, return None
         if not articles:
             return None
-        # Count the number of articles written by each author
         author_counts = {}
         for article in articles:
             if article.author_id in author_counts:
                 author_counts[article.author_id] += 1
             else:
                 author_counts[article.author_id] = 1
-        # Filter authors who have written more than 2 articles
         contributing_authors = []
         for author_id, count in author_counts.items():
             if count > 2:
                 author = Author.find_by_id(author_id)
                 if author:
                     contributing_authors.append(author)
-        # If no authors found, return None
         if not contributing_authors:
             return None
         return contributing_authors
